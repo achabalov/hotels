@@ -3,11 +3,13 @@ from sqlalchemy import insert, select
 
 from src.models.bookings import BookingsOrm
 from src.repositories.base import BaseRepository
+from src.repositories.mappers.mappers import BookingDataMapper
 from src.schemas.bookings import BookingsCreate
 
 
 class BookingRepository(BaseRepository):
     model = BookingsOrm
+    mapper = BookingDataMapper
 
     async def add_bookings(self, user_id, price, data: BookingsCreate):
         add_data_stmt = insert(self.model).values(price=price, user_id=user_id, **data.model_dump()).returning(self.model)

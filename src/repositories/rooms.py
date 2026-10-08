@@ -1,18 +1,21 @@
 from datetime import date
 
 from sqlalchemy import select, insert, delete, update
+from sqlalchemy.orm import selectinload
 
 from src.models.rooms import RoomsOrm
 from src.repositories.base import BaseRepository
+from src.repositories.mappers.mappers import RoomDataMapper
 from src.repositories.ustils import get_ids_for_booking
 from src.schemas.rooms import RoomCreate, RoomsPatch
 
 
 class RoomsRepository(BaseRepository):
     model = RoomsOrm
+    mapper = RoomDataMapper
 
     async def get_room(self, **filtered):
-        query = select(self.model).filter_by(**filtered)
+        query = select(self.model).filter_by(**filtered).options(selectinload(RoomsOrm.facilities))
 
         result = await self.session.execute(query)
         return result.scalars().one_or_none()
@@ -22,9 +25,13 @@ class RoomsRepository(BaseRepository):
         result = await self.get_filtered(RoomsOrm.id.in_(rooms_ids_to_get))
         return result
 
+    async def get_filtered(self, *filter, **filter_by):
+        query = select(self.model).filter(*filter).options(selectinload(RoomsOrm.facilities)).filter_by(**filter_by)
+        result = await self.session.execute(query)
+        return result.scalars().all()
 
     async def get_all(self):
-        query = select(self.model)
+        query = select(self.model).options(selectinload(RoomsOrm.facilities))
 
         result = await self.session.execute(query)
         return result.scalars().all()
@@ -44,6 +51,6 @@ class RoomsRepository(BaseRepository):
 
     async def update(self, room: RoomsPatch, exclude_unset: bool, **filter_by):
         update_data = update(self.model).filter_by(**filter_by).values(
-            **room.model_dump(exclude_unset=exclude_unset)).returning(self.model)
+            **room.model_dump(exclude_unset=exclude_unset, exclude={'facilities_ids', 'hotel_id'})).returning(self.model)
         result = await self.session.execute(update_data)
         return result.scalars().one_or_none()

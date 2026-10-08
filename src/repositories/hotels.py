@@ -5,13 +5,15 @@ from sqlalchemy import select, func
 from src.models.hotels import HotelsOrm
 from src.models.rooms import RoomsOrm
 from src.repositories.base import BaseRepository, BaseModel
+from src.repositories.mappers.base import DataMapper
+from src.repositories.mappers.mappers import HotelDataMapper
 from src.repositories.ustils import get_ids_for_booking
 from src.schemas.hotels import Hotel
 
 
 class HotelRepository(BaseRepository):
     model = HotelsOrm
-    schema = Hotel
+    mapper: DataMapper = HotelDataMapper
 
     async def get_filtered_by_date(self, date_from: date, date_to: date, location, title, limit, offset) -> list[Hotel]:
         rooms_ids_to_get = get_ids_for_booking(date_from=date_from, date_to=date_to)
@@ -30,4 +32,4 @@ class HotelRepository(BaseRepository):
 
         query = query.limit(limit).offset(offset)
         result = await self.session.execute(query)
-        return result.scalars().all()
+        return [self.mapper.map_to_domain_entity(hotel) for hotel in result.scalars().all()]
