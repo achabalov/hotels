@@ -9,9 +9,11 @@ class Facilities(FacilitiesAdd):
     model_config = ConfigDict(from_attributes=True)
 
 
-class RoomFacilitiesAdd(BaseModel):
+class RoomFacilitiesCreate(BaseModel):
     room_id: int
     facilities_id: int
 
-class RoomFacility(RoomFacilitiesAdd):
+class RoomFacility(RoomFacilitiesCreate):
     id: int
+
+    model_config = ConfigDict(from_attributes=True)

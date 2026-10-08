@@ -53,6 +53,7 @@ python-dotenv==1.2.3
 python-multipart==0.0.32
 pytokens==0.4.1
 PyYAML==6.0.3
+redis==8.1.0
 requests==2.34.2
 rich==15.0.0
 rich-toolkit==0.20.3

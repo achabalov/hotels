@@ -1,10 +1,12 @@
 from pydantic import BaseModel, Field
 
+from src.schemas.facilities import Facilities
+
+
 class Rooms(BaseModel):
     title: str
 
 class RoomsPatch(BaseModel):
-    hotel_id: int = Field(None, alias="hotel_id")
     title: str | None = Field(None, alias="title")
     description: str | None = Field(None, alias="description")
     price: int | None = Field(None, alias="price")
@@ -26,6 +28,11 @@ class RoomResponse(BaseModel):
     price: int | None = None
     quantity: int | None = None
 
-class RoomResponseStatus(BaseModel):
-    status: str
-    data: RoomResponse
+class RoomsWithRels(BaseModel):
+    id: int
+    hotel_id: int
+    title: str
+    description: str | None = None
+    price: int | None = None
+    quantity: int | None = None
+    facilities: list[Facilities]
