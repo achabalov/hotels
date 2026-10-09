@@ -1,28 +1,26 @@
 from sqlalchemy import select, insert, delete
-from sqlalchemy.orm import selectinload
-from fastapi import Body
 
 from src.models.facilities import FacilitiesOrm, RoomsFacilitiesOrm
 from src.repositories.base import BaseRepository
 from src.repositories.mappers.mappers import FacilityDataMapper
-from src.schemas.facilities import FacilitiesAdd, RoomFacilitiesCreate
+from src.schemas.facilities import FacilitiesCreate
 
 
 class FacilitiesRepository(BaseRepository):
     model = FacilitiesOrm
     mapper = FacilityDataMapper
 
-    async def get_all(self) -> list[FacilitiesAdd]:
+    async def get_all(self) -> list[FacilitiesOrm]:
         query = select(self.model)
         result = await self.session.execute(query)
         return result.scalars().all()
 
-    async def create(self, title: str = Body()):
+    async def create(self, title: FacilitiesCreate) -> FacilitiesOrm:
         stmt = insert(self.model).values(title=title).returning(self.model)
         result = await self.session.execute(stmt)
         return result.scalar()
 
-    async def get(self, facility_id: int) -> FacilitiesAdd:
+    async def get(self, facility_id: int) -> FacilitiesOrm:
         query = select(self.model).filter_by(id=facility_id)
         result = await self.session.execute(query)
         return result.scalars().one()

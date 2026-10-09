@@ -3,6 +3,7 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 import sys
 from pathlib import Path
+from redis_fastapi import FastAPIRedis, cache
 
 from src.init import redis_manager
 
@@ -23,7 +24,8 @@ async def lifespan(app: FastAPI):
     await redis_manager.close()
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI()
+FastAPIRedis(app).lifespan().caching()
 
 app.include_router(router_auth)
 app.include_router(router_hotels)
