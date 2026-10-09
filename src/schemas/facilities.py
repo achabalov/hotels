@@ -1,9 +1,9 @@
-from pydantic import BaseModel, Field, ConfigDict
+from pydantic import BaseModel, ConfigDict
 
-class FacilitiesAdd(BaseModel):
+class FacilitiesCreate(BaseModel):
     title: str
 
-class Facilities(FacilitiesAdd):
+class Facilities(FacilitiesCreate):
     id: int
 
     model_config = ConfigDict(from_attributes=True)

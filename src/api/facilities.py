@@ -1,36 +1,34 @@
-import json
+from datetime import time
 
 from fastapi import APIRouter
-
-from src.api.dependencies import DBDep
-from src.init import redis_manager
-from src.repositories.mappers.mappers import FacilityDataMapper
-from src.schemas.facilities import Facilities
+from functools import wraps
+from src.api.dependencies import DBDep, cached, cache_clear
+from src.schemas.facilities import Facilities, FacilitiesCreate
 
 router = APIRouter(prefix='/facilities', tags=['facilities'])
 
 
-@router.get('/')
+@router.get('/', dependencies=[cached(ttl=60, group='facilities')])
 async def get_all_facilities(db: DBDep):
-    redis_facilities = await redis_manager.get('facilities')
-    if redis_facilities is None:
-        data = await db.facilities.get_all()
-        facilities = [FacilityDataMapper.map_to_domain_entity(item) for item in data]
-        await redis_manager.set('facilities', json.dumps([item.model_dump() for item in facilities]), expire=60)
-        return data
+    data = await db.facilities.get_all()
 
-    return [Facilities.model_validate(item) for item in json.loads(redis_facilities)]
+    return [Facilities.model_validate(item) for item in data]
 
-@router.get('/{facility_id}')
+@router.get('/{facility_id}', dependencies=[cached(ttl=60, group='facilities')])
 async def get_facility(facility_id: int, db: DBDep):
     data = await db.facilities.get(facility_id)
 
-    return data
+    return Facilities.model_validate(data)
 
-@router.post('/create')
-async def create_facility(db: DBDep, title: str):
-    data = await db.facilities.create(title)
+@router.post('/', dependencies=[cache_clear(group='facilities')])
+async def create_facility(db: DBDep, data: FacilitiesCreate):
+    data = await db.facilities.create(data.title)
     await db.session.commit()
 
-    return {'status': 'success', 'data': data}
+    return Facilities.model_validate(data)
+
+
+
+
+
 
