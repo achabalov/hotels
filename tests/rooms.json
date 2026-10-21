@@ -1,0 +1,165 @@
+[
+  {
+    "hotel_id": 1,
+    "title": "Standard",
+    "description": "Уютный стандартный номер с одной двуспальной кроватью.",
+    "price": 4500,
+    "quantity": 8,
+    "facilities_ids": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "hotel_id": 1,
+    "title": "Standard Twin",
+    "description": "Стандартный номер с двумя раздельными кроватями.",
+    "price": 4800,
+    "quantity": 6,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4
+    ]
+  },
+  {
+    "hotel_id": 1,
+    "title": "Comfort",
+    "description": "Просторный номер повышенной комфортности.",
+    "price": 6200,
+    "quantity": 5,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "hotel_id": 1,
+    "title": "Suite",
+    "description": "Двухкомнатный номер с гостиной и спальней.",
+    "price": 9500,
+    "quantity": 2,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "hotel_id": 2,
+    "title": "Economy",
+    "description": "Компактный номер для коротких поездок.",
+    "price": 3900,
+    "quantity": 10,
+    "facilities_ids": [
+      1,
+      2
+    ]
+  },
+  {
+    "hotel_id": 2,
+    "title": "Standard",
+    "description": "Классический номер с рабочей зоной и двуспальной кроватью.",
+    "price": 5200,
+    "quantity": 7,
+    "facilities_ids": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "hotel_id": 2,
+    "title": "Superior",
+    "description": "Улучшенный номер с увеличенной площадью.",
+    "price": 7100,
+    "quantity": 4,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "hotel_id": 2,
+    "title": "Junior Suite",
+    "description": "Большой номер с зоной отдыха.",
+    "price": 8900,
+    "quantity": 3,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "hotel_id": 3,
+    "title": "Standard",
+    "description": "Современный номер с двуспальной кроватью.",
+    "price": 5800,
+    "quantity": 12,
+    "facilities_ids": [
+      1,
+      2,
+      3
+    ]
+  },
+  {
+    "hotel_id": 3,
+    "title": "Business",
+    "description": "Номер с полноценным рабочим местом для деловых поездок.",
+    "price": 7600,
+    "quantity": 6,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5
+    ]
+  },
+  {
+    "hotel_id": 3,
+    "title": "Deluxe",
+    "description": "Просторный номер с улучшенным интерьером и зоной отдыха.",
+    "price": 10500,
+    "quantity": 4,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6
+    ]
+  },
+  {
+    "hotel_id": 3,
+    "title": "Executive Suite",
+    "description": "Премиальный двухкомнатный номер с отдельной гостиной.",
+    "price": 16500,
+    "quantity": 2,
+    "facilities_ids": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ]
+  }
+]
