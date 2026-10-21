@@ -8,7 +8,7 @@ from src.schemas.facilities import RoomFacilitiesCreate
 from src.schemas.rooms import RoomCreate, RoomsPatch, RoomsWithRels, RoomResponse
 from src.services.room import RoomService
 
-router = APIRouter(prefix="/hotel", tags=["rooms"])
+router = APIRouter(prefix="/hotel", tags=["Комнаты"])
 
 
 @router.get('/{hotel_id}/rooms/{room_id}', response_model=RoomsWithRels)
@@ -40,7 +40,7 @@ async def create_room(db: DBDep, hotel_id: int, data: RoomCreate):
 
     data = await db.rooms.create_room(data, hotel_id=hotel_id)
 
-    rooms_facilities_data = [RoomFacilitiesCreate(room_id=data.id, facility_id=f_id) for f_id in facilities_ids]
+    rooms_facilities_data = [RoomFacilitiesCreate(room_id=data.id, facilities_id=f_id) for f_id in facilities_ids]
     await db.rooms_facilities.add_bulk(rooms_facilities_data)
     await db.session.commit()
     return data

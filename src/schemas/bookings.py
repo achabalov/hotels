@@ -1,7 +1,24 @@
 from datetime import date
+from pydantic import BaseModel
 
-from src.repositories.base import BaseModel
 
+class BookingsCreate(BaseModel):
+    room_id: int
+    date_from: date
+    date_to: date
+
+
+class BookingsAdd(BaseModel):
+    room_id: int
+    user_id: int
+    date_from: date
+    date_to: date
+    price: int
+
+class BookingsAddRequest(BaseModel):
+    room_id: int
+    date_from: date
+    date_to: date
 
 class Bookings(BaseModel):
     id: int
@@ -10,12 +27,3 @@ class Bookings(BaseModel):
     date_from: date
     date_to: date
     price: int
-
-class BookingsCreate(BaseModel):
-    room_id: int
-    date_from: date
-    date_to: date
-
-class BookingsResponse(BaseModel):
-    status: str
-    data: Bookings

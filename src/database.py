@@ -1,5 +1,6 @@
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase
+from sqlalchemy.pool import NullPool
 
 from src.config import settings
 
@@ -11,3 +12,14 @@ session = async_session_maker()
 
 class Base(DeclarativeBase):
     pass
+
+
+engine_null_pull = create_async_engine(
+    settings.DB_URL,
+    poolclass=NullPool,
+)
+
+null_pull_session_maker = async_sessionmaker(
+    bind=engine_null_pull,
+    expire_on_commit=False,
+)

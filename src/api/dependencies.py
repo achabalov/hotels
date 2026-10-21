@@ -1,8 +1,9 @@
 from typing import Annotated
-from jwt.exceptions import ExpiredSignatureError
+
 from fastapi import Depends, Query, Request, HTTPException
-from redis_fastapi import cache, default_key_builder, cache_put, cache_evict
+from jwt.exceptions import ExpiredSignatureError
 from pydantic import BaseModel
+from redis_fastapi import cache, cache_put, cache_evict
 
 from src.database import async_session_maker
 from src.services.auth import AuthService
