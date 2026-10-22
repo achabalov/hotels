@@ -27,12 +27,13 @@ class BookingRepository(BaseRepository):
     #
     #     return stmt.scalars().one()
 
-
     async def add_bookings(self, data: BookingsAdd):
         rooms_response = select(RoomsOrm).filter_by(id=data.room_id)
         hotel = await session.execute(rooms_response)
         hotel_id = hotel.scalars().first().hotel_id
-        rooms_ids_to_get = get_ids_for_booking(date_from=data.date_from, date_to=data.date_to, hotel_id=hotel_id)
+        rooms_ids_to_get = get_ids_for_booking(
+            date_from=data.date_from, date_to=data.date_to, hotel_id=hotel_id
+        )
 
         rooms_ids_to_book_res = await session.execute(rooms_ids_to_get)
         rooms_ids_to_book: list[int] = rooms_ids_to_book_res.scalars().all()

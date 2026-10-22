@@ -7,6 +7,7 @@ class Rooms(BaseModel):
     id: int
     title: str
 
+
 class RoomsPatch(BaseModel):
     title: str | None = Field(None, alias="title")
     description: str | None = Field(None, alias="description")
@@ -14,12 +15,14 @@ class RoomsPatch(BaseModel):
     quantity: int | None = Field(None, alias="quantity")
     facilities_ids: list[int] | None = Field(None, alias="facilities_ids")
 
+
 class RoomCreate(BaseModel):
     title: str
     description: str | None = None
     price: int | None = None
     quantity: int | None = None
     facilities_ids: list[int] | None = None
+
 
 class RoomResponse(BaseModel):
     id: int
@@ -29,6 +32,7 @@ class RoomResponse(BaseModel):
     price: int | None = None
     quantity: int | None = None
 
+
 class RoomsWithRels(BaseModel):
     id: int
     hotel_id: int
@@ -37,6 +41,7 @@ class RoomsWithRels(BaseModel):
     price: int | None = None
     quantity: int | None = None
     facilities: list[Facilities]
+
 
 class RoomSeed(BaseModel):
     hotel_id: int

@@ -50,7 +50,12 @@ class BaseRepository:
         await self.session.execute(add_data_stmt)
 
     async def update(self, data: BaseModel, exclude_unset, **filter_by):
-        update_data = update(self.model).filter_by(**filter_by).values(**data.model_dump(exclude_unset=exclude_unset)).returning(self.model)
+        update_data = (
+            update(self.model)
+            .filter_by(**filter_by)
+            .values(**data.model_dump(exclude_unset=exclude_unset))
+            .returning(self.model)
+        )
         result = await self.session.execute(update_data)
         return result.scalars().one()
 

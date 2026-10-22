@@ -1,30 +1,32 @@
 """initial migration
 
 Revision ID: 8ab8d5fe823d
-Revises: 
+Revises:
 Create Date: 2026-09-04 12:48:49.364246
 
 """
+
 from collections.abc import Sequence
 
 import sqlalchemy as sa
 from alembic import op
 
-revision: str = '8ab8d5fe823d'
+revision: str = "8ab8d5fe823d"
 down_revision: str | Sequence[str] | None = None
 branch_labels: str | Sequence[str] | None = None
 depends_on: str | Sequence[str] | None = None
 
 
 def upgrade() -> None:
-    op.create_table('hotels',
-                    sa.Column('id', sa.Integer(), nullable=False),
-                    sa.Column('title', sa.String(length=100), nullable=False),
-                    sa.Column('location', sa.String(), nullable=False),
-                    sa.PrimaryKeyConstraint('id'),
-                    sa.UniqueConstraint('id')
-                    )
+    op.create_table(
+        "hotels",
+        sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("title", sa.String(length=100), nullable=False),
+        sa.Column("location", sa.String(), nullable=False),
+        sa.PrimaryKeyConstraint("id"),
+        sa.UniqueConstraint("id"),
+    )
 
 
 def downgrade() -> None:
-    op.drop_table('hotels')
+    op.drop_table("hotels")

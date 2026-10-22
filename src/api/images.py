@@ -6,7 +6,8 @@ from src.tasks.tasks import resize_image
 
 router = APIRouter(prefix="/images", tags=["Изображения"])
 
-@router.post('')
+
+@router.post("")
 def upload_image(file: UploadFile, background_task: BackgroundTasks):
     image_path = f"src/static/images/{file.filename}"
     with open(image_path, "wb+") as f:
