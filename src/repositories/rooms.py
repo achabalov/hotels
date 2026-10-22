@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import select, insert, delete, update
+from sqlalchemy import delete, insert, select, update
 from sqlalchemy.orm import selectinload
 
 from src.models.rooms import RoomsOrm

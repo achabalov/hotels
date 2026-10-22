@@ -5,7 +5,7 @@ from fastapi import APIRouter
 from src.api.dependencies import DBDep
 from src.repositories.mappers.mappers import RoomDataWithRelsMapper
 from src.schemas.facilities import RoomFacilitiesCreate
-from src.schemas.rooms import RoomCreate, RoomsPatch, RoomsWithRels, RoomResponse
+from src.schemas.rooms import RoomCreate, RoomResponse, RoomsPatch, RoomsWithRels
 from src.services.room import RoomService
 
 router = APIRouter(prefix="/hotel", tags=["Комнаты"])

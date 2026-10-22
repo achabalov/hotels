@@ -11,7 +11,7 @@ def sync_requests():
     start = time.time()
 
     for i in range(50):
-        response = requests.get(f"{url}/{i}")
+        requests.get(f"{url}/{i}")
         if i % 10 == 0:
             print(f'Прогресс {i+1}/100')
 

@@ -1,13 +1,10 @@
-import asyncio
 from pathlib import Path
 from time import sleep
 from uuid import uuid4
 
 from PIL import Image
 
-from src.database import null_pull_session_maker
 from src.tasks.tasks_app import celery_instance
-from src.utils.db_manager import DBManager
 
 IMAGES_DIR = Path("src/static/images")
 IMAGE_WIDTHS = (10000, 500, 200)

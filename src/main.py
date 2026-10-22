@@ -1,23 +1,22 @@
 import asyncio
+import sys
 from contextlib import asynccontextmanager
+from pathlib import Path
 
 from fastapi import FastAPI
-import sys
-from pathlib import Path
-from redis_fastapi import FastAPIRedis, cache
+from redis_fastapi import FastAPIRedis
 
 from src.api.dependencies import get_db
 from src.init import redis_manager
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from src.api.hotels import router as router_hotels
 from src.api.auth import router as router_auth
-from src.api.rooms import router as router_rooms
 from src.api.bookings import router as router_bookings
 from src.api.facilities import router as router_facilities
+from src.api.hotels import router as router_hotels
 from src.api.images import router as router_images
-from src.config import settings
+from src.api.rooms import router as router_rooms
 from src.database import *
 
 

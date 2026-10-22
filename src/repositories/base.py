@@ -1,5 +1,5 @@
-from sqlalchemy import select, insert, update, delete
 from pydantic import BaseModel
+from sqlalchemy import delete, insert, select, update
 
 from src.repositories.mappers.base import DataMapper
 

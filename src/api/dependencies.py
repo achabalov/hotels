@@ -1,9 +1,9 @@
 from typing import Annotated
 
-from fastapi import Depends, Query, Request, HTTPException
+from fastapi import Depends, HTTPException, Query, Request
 from jwt.exceptions import ExpiredSignatureError
 from pydantic import BaseModel
-from redis_fastapi import cache, cache_put, cache_evict
+from redis_fastapi import cache, cache_evict, cache_put
 
 from src.database import async_session_maker
 from src.services.auth import AuthService
@@ -29,7 +29,7 @@ def get_current_user_id(token: str = Depends(get_token)) -> int:
     try:
         token = AuthService().decode_token(token=token)
         return token['user_id']
-    except ExpiredSignatureError as e:
+    except ExpiredSignatureError:
         raise HTTPException(401, "Токен истек")
 
 

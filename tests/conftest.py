@@ -1,6 +1,5 @@
 import json
 from pathlib import Path
-
 from unittest import mock
 
 mock.patch("src.api.dependencies.cache", lambda *args, **kwargs: lambda: None).start()
@@ -10,7 +9,7 @@ mock.patch('src.api.dependencies.cache_evict', lambda *args, **kwargs: lambda: N
 import pytest
 from asgi_lifespan import LifespanManager
 from httpx import ASGITransport, AsyncClient
-from sqlalchemy import MetaData, Table, Column, String
+from sqlalchemy import Column, MetaData, String, Table
 
 from src.config import settings
 from src.database import Base, engine_null_pull, null_pull_session_maker
@@ -75,13 +74,13 @@ async def init_db(check_test_mode) :
         await conn.run_sync(Base.metadata.create_all)
 
 
-    with open(BASE_DIR / "facilities.json", 'r', encoding='utf-8') as file:
+    with open(BASE_DIR / "facilities.json", 'r', encoding='utf-8') as file: # noqa
         facilities = json.load(file)
 
-    with open(BASE_DIR / "hotels.json", 'r', encoding='utf-8') as file:
+    with open(BASE_DIR / "hotels.json", 'r', encoding='utf-8') as file: # noqa
         hotels = json.load(file)
 
-    with open(BASE_DIR / 'rooms.json', 'r', encoding='utf-8') as file:
+    with open(BASE_DIR / 'rooms.json', 'r', encoding='utf-8') as file: # noqa
         rooms_data = json.load(file)
 
     facilities = [FacilitiesCreate.model_validate(f) for f in facilities]

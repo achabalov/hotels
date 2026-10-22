@@ -1,8 +1,8 @@
 from datetime import date
 
-from fastapi import Query, APIRouter, Body
+from fastapi import APIRouter, Body
 
-from src.api.dependencies import PaginationDep, DBDep
+from src.api.dependencies import DBDep, PaginationDep
 from src.schemas.hotels import HotelAdd, HotelPatch
 
 router = APIRouter(prefix='/hotels', tags=['отели'])
@@ -40,7 +40,7 @@ async def get_hotel_by_id(db: DBDep, hotel_id: int):
 
 
 @router.post("", summary="Создать новый отель")
-async def create_hotel(db: DBDep, hotel_data: HotelAdd = Body(openapi_examples={
+async def create_hotel(db: DBDep, hotel_data: HotelAdd = Body(openapi_examples={ # noqa
     "1": {"summary": "Sochi", "value": {
         "title": "Отель Сочи 5 звезд",
         "location": "hotel sochi"
