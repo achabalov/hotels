@@ -26,7 +26,12 @@ class RoomsRepository(BaseRepository):
         return result
 
     async def get_filtered(self, *filter, **filter_by):
-        query = select(self.model).filter(*filter).options(selectinload(RoomsOrm.facilities)).filter_by(**filter_by)
+        query = (
+            select(self.model)
+            .filter(*filter)
+            .options(selectinload(RoomsOrm.facilities))
+            .filter_by(**filter_by)
+        )
         result = await self.session.execute(query)
         return result.scalars().all()
 
@@ -36,21 +41,30 @@ class RoomsRepository(BaseRepository):
         result = await self.session.execute(query)
         return result.scalars().all()
 
-
     async def create_room(self, data: RoomCreate, hotel_id: int):
-        add_data_stmt = insert(self.model).values(hotel_id=hotel_id, **data.model_dump(exclude={"facilities_ids"})).returning(self.model)
+        add_data_stmt = (
+            insert(self.model)
+            .values(hotel_id=hotel_id, **data.model_dump(exclude={"facilities_ids"}))
+            .returning(self.model)
+        )
         stmt = await self.session.execute(add_data_stmt)
         return stmt.scalars().one()
-
 
     async def delete_room(self, **filter):
         delete_room = delete(self.model).filter_by(**filter).returning(self.model)
         result = await self.session.execute(delete_room)
         return result.scalars().one_or_none()
 
-
     async def update(self, room: RoomsPatch, exclude_unset: bool, **filter_by):
-        update_data = update(self.model).filter_by(**filter_by).values(
-            **room.model_dump(exclude_unset=exclude_unset, exclude={'facilities_ids', 'hotel_id'})).returning(self.model)
+        update_data = (
+            update(self.model)
+            .filter_by(**filter_by)
+            .values(
+                **room.model_dump(
+                    exclude_unset=exclude_unset, exclude={"facilities_ids", "hotel_id"}
+                )
+            )
+            .returning(self.model)
+        )
         result = await self.session.execute(update_data)
         return result.scalars().one_or_none()

@@ -3,9 +3,9 @@ from celery import Celery
 from src.config import settings
 
 celery_instance = Celery(
-    name='tasks',
+    name="tasks",
     broker=settings.REDIS_URL,
-    include=['src.tasks.tasks'],
+    include=["src.tasks.tasks"],
 )
 
 # celery_instance.conf.beat_schedule = {

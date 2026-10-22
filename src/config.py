@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    MODE: Literal["TEST", 'LOCAL', "DEV", 'PROD'] = 'TEST'
+    MODE: Literal["TEST", "LOCAL", "DEV", "PROD"] = "TEST"
 
     DB_NAME: str
     DB_PORT: int
@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     def DB_URL(self):
         return f"postgresql+asyncpg://{self.DB_USER}:{self.DB_PASS}@{self.DB_HOST}:{self.DB_PORT}/{self.DB_NAME}"
 
-    model_config = SettingsConfigDict(env_file=".env", extra='ignore')
+    model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     JWT_SECRET_KEY: str
     JWT_ALGORITHM: str
@@ -28,5 +28,6 @@ class Settings(BaseSettings):
     @property
     def REDIS_URL(self):
         return f"redis://{self.REDIS_HOST}:{self.REDIS_PORT}/0"
+
 
 settings = Settings()

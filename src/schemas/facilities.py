@@ -4,6 +4,7 @@ from pydantic import BaseModel, ConfigDict
 class FacilitiesCreate(BaseModel):
     title: str
 
+
 class Facilities(FacilitiesCreate):
     id: int
 
@@ -13,6 +14,7 @@ class Facilities(FacilitiesCreate):
 class RoomFacilitiesCreate(BaseModel):
     room_id: int
     facilities_id: int
+
 
 class RoomFacility(RoomFacilitiesCreate):
     id: int

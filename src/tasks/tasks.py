@@ -9,11 +9,13 @@ from src.tasks.tasks_app import celery_instance
 IMAGES_DIR = Path("src/static/images")
 IMAGE_WIDTHS = (10000, 500, 200)
 
+
 @celery_instance.task
 def test_task():
-    print('start')
+    print("start")
     sleep(5)
-    return 'end'
+    return "end"
+
 
 @celery_instance.task
 def resize_image(image_path: str):

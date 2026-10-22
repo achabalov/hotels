@@ -7,18 +7,20 @@ from src.schemas.bookings import (
     BookingsAddRequest,
 )
 
-router = APIRouter(prefix='/bookings', tags=['Бронирование>'])
+router = APIRouter(prefix="/bookings", tags=["Бронирование>"])
 
 
-@router.get('', response_model=list[Bookings])
+@router.get("", response_model=list[Bookings])
 async def get_bookings(db: DBDep):
     result = await db.bookings.get_bookings()
     return result
 
-@router.get('/me')
+
+@router.get("/me")
 async def get_bookings_me(user_id: UserIdDep, db: DBDep):
     result = await db.bookings.get_bookings_me(user_id=user_id)
     return result
+
 
 @router.post("", response_model=Bookings)
 async def add_bookings(

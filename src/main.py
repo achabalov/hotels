@@ -25,10 +25,12 @@ async def get_bookings_today_checkin():
         bookings = await db.bookings.get_bookings_with_today_checkin()
         print(f"Bookings: {bookings}")
 
+
 async def run_send_email_always():
     while True:
         await get_bookings_today_checkin()
         await asyncio.sleep(5)
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,7 +38,6 @@ async def lifespan(app: FastAPI):
     asyncio.create_task(run_send_email_always())
     yield
     await redis_manager.close()
-
 
 
 app = FastAPI(lifespan=lifespan)
@@ -48,4 +49,3 @@ app.include_router(router_rooms)
 app.include_router(router_bookings)
 app.include_router(router_facilities)
 app.include_router(router_images)
-

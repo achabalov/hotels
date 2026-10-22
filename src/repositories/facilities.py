@@ -30,40 +30,28 @@ class RoomsFacilitiesRepository(BaseRepository):
     model = RoomsFacilitiesOrm
 
     async def get_room_facilities(self, room_id: int) -> list[int]:
-        stmt = (
-            select(self.model.facilities_id)
-            .where(self.model.room_id == room_id)
-        )
+        stmt = select(self.model.facilities_id).where(self.model.room_id == room_id)
 
         result = await self.session.execute(stmt)
 
         return result.scalars().all()
 
     async def delete_room_facilities(
-            self,
-            room_id: int,
-            delete_facilities_ids: set[int],
+        self,
+        room_id: int,
+        delete_facilities_ids: set[int],
     ):
-        stmt = (
-            delete(self.model)
-            .where(
-                self.model.room_id == room_id,
-                self.model.facilities_id.in_(delete_facilities_ids),
-            )
+        stmt = delete(self.model).where(
+            self.model.room_id == room_id,
+            self.model.facilities_id.in_(delete_facilities_ids),
         )
 
         await self.session.execute(stmt)
 
     async def delete_room_facilities_all(
-            self,
-            room_id: int,
+        self,
+        room_id: int,
     ):
-        stmt = (
-            delete(self.model)
-            .where(
-                self.model.room_id == room_id
-            )
-        )
+        stmt = delete(self.model).where(self.model.room_id == room_id)
 
         await self.session.execute(stmt)
-

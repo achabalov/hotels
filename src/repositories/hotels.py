@@ -15,7 +15,9 @@ class HotelRepository(BaseRepository):
     model = HotelsOrm
     mapper: DataMapper = HotelDataMapper
 
-    async def get_filtered_by_date(self, date_from: date, date_to: date, location, title, limit, offset) -> list[Hotel]:
+    async def get_filtered_by_date(
+        self, date_from: date, date_to: date, location, title, limit, offset
+    ) -> list[Hotel]:
         rooms_ids_to_get = get_ids_for_booking(date_from=date_from, date_to=date_to)
 
         hotels_ids_to_get = (
