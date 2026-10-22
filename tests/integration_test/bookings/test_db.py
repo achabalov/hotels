@@ -1,6 +1,6 @@
 from datetime import date
 
-from src.schemas.bookings import BookingsAdd, BookingsCreate
+from src.schemas.bookings import BookingsAdd
 
 
 async def test_add_booking(db):

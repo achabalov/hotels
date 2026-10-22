@@ -1,8 +1,8 @@
+from src.repositories.bookings import BookingRepository
+from src.repositories.facilities import FacilitiesRepository, RoomsFacilitiesRepository
 from src.repositories.hotels import HotelRepository
 from src.repositories.rooms import RoomsRepository
-from src.repositories.bookings import BookingRepository
 from src.repositories.users import UserRepository
-from src.repositories.facilities import FacilitiesRepository, RoomsFacilitiesRepository
 
 
 class DBManager:

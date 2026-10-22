@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from src.api.dependencies import DBDep, cached, cache_clear
+from src.api.dependencies import DBDep, cache_clear, cached
 from src.schemas.facilities import Facilities, FacilitiesCreate
 from src.tasks.tasks import test_task
 

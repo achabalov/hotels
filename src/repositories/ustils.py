@@ -1,6 +1,6 @@
 from datetime import date
 
-from sqlalchemy import select, func
+from sqlalchemy import func, select
 
 from src.models.bookings import BookingsOrm
 from src.models.rooms import RoomsOrm

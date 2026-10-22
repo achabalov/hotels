@@ -2,6 +2,7 @@ from pydantic import BaseModel, Field
 
 from src.schemas.facilities import Facilities
 
+
 class Rooms(BaseModel):
     id: int
     title: str
