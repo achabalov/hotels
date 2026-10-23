@@ -1,8 +1,10 @@
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Field
+
+from src.schemas.validation import NonEmptyString
 
 
 class FacilitiesCreate(BaseModel):
-    title: str
+    title: NonEmptyString = Field(max_length=100)
 
 
 class Facilities(FacilitiesCreate):

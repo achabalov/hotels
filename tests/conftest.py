@@ -102,5 +102,6 @@ async def init_db(check_test_mode):
                 RoomFacilitiesCreate(room_id=created_room.id, facilities_id=f_id)
                 for f_id in facilities_ids
             ]
+
         await db_.rooms_facilities.add_bulk(rooms_facilities_data)
         await db_.commit()

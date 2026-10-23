@@ -2,15 +2,17 @@ from datetime import date
 
 from sqlalchemy import func, select
 
+from src.exceptions import validate_dates
 from src.models.bookings import BookingsOrm
 from src.models.rooms import RoomsOrm
 
 
 def get_ids_for_booking(date_from: date, date_to: date, hotel_id: int | None = None):
+    validate_dates(date_from, date_to)
     rooms_count = (
         select(BookingsOrm.room_id, func.count("*").label("rooms_booked"))
         .select_from(BookingsOrm)
-        .filter(BookingsOrm.date_from <= date_from, BookingsOrm.date_to >= date_to)
+        .filter(BookingsOrm.date_from < date_to, BookingsOrm.date_to > date_from)
         .group_by(BookingsOrm.room_id)
         .cte(name="rooms_count")
     )
@@ -28,8 +30,6 @@ def get_ids_for_booking(date_from: date, date_to: date, hotel_id: int | None = N
 
     if hotel_id is not None:
         rooms_ids_for_hotel = rooms_ids_for_hotel.filter_by(hotel_id=hotel_id)
-
-    rooms_ids_for_hotel = rooms_ids_for_hotel.subquery(name="rooms_id_from_hotel")
 
     rooms_ids_to_get = select(rooms_left_table.c.room_id).filter(
         rooms_left_table.c.rooms_left > 0,

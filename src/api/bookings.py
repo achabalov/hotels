@@ -1,6 +1,7 @@
 from fastapi import APIRouter
 
 from src.api.dependencies import DBDep, UserIdDep
+from src.exceptions import NotFoundError, validate_dates
 from src.schemas.bookings import (
     Bookings,
     BookingsAdd,
@@ -28,7 +29,10 @@ async def add_bookings(
     db: DBDep,
     data: BookingsAddRequest,
 ):
+    validate_dates(data.date_from, data.date_to)
     room = await db.rooms.get_room(id=data.room_id)
+    if room is None:
+        raise NotFoundError("Номер не найден")
     room_price: int = room.price
     booking_data = BookingsAdd(
         **data.model_dump(),
@@ -38,6 +42,6 @@ async def add_bookings(
 
     result = await db.bookings.add_bookings(booking_data)
 
-    await db.session.commit()
+    await db.commit()
 
     return result

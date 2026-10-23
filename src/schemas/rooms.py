@@ -1,6 +1,9 @@
+from typing import Annotated
+
 from pydantic import BaseModel, Field
 
 from src.schemas.facilities import Facilities
+from src.schemas.validation import NonEmptyString, PatchModel
 
 
 class Rooms(BaseModel):
@@ -8,20 +11,20 @@ class Rooms(BaseModel):
     title: str
 
 
-class RoomsPatch(BaseModel):
-    title: str | None = Field(None, alias="title")
+class RoomsPatch(PatchModel):
+    title: NonEmptyString | None = Field(None, max_length=255)
     description: str | None = Field(None, alias="description")
-    price: int | None = Field(None, alias="price")
-    quantity: int | None = Field(None, alias="quantity")
-    facilities_ids: list[int] | None = Field(None, alias="facilities_ids")
+    price: int | None = Field(None, ge=0)
+    quantity: int | None = Field(None, ge=1)
+    facilities_ids: list[Annotated[int, Field(gt=0)]] | None = None
 
 
 class RoomCreate(BaseModel):
-    title: str
+    title: NonEmptyString = Field(max_length=255)
     description: str | None = None
-    price: int | None = None
-    quantity: int | None = None
-    facilities_ids: list[int] | None = None
+    price: int = Field(ge=0)
+    quantity: int = Field(ge=1)
+    facilities_ids: list[Annotated[int, Field(gt=0)]] = Field(default_factory=list)
 
 
 class RoomResponse(BaseModel):
