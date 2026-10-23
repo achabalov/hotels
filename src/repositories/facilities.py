@@ -1,5 +1,6 @@
 from sqlalchemy import delete, insert, select
 
+from src.exceptions import NotFoundError
 from src.models.facilities import FacilitiesOrm, RoomsFacilitiesOrm
 from src.repositories.base import BaseRepository
 from src.repositories.mappers.mappers import FacilityDataMapper
@@ -12,18 +13,21 @@ class FacilitiesRepository(BaseRepository):
 
     async def get_all(self) -> list[FacilitiesOrm]:
         query = select(self.model)
-        result = await self.session.execute(query)
+        result = await self._execute(query)
         return result.scalars().all()
 
     async def create(self, title: FacilitiesCreate) -> FacilitiesOrm:
         stmt = insert(self.model).values(title=title).returning(self.model)
-        result = await self.session.execute(stmt)
+        result = await self._execute(stmt)
         return result.scalar()
 
     async def get(self, facility_id: int) -> FacilitiesOrm:
         query = select(self.model).filter_by(id=facility_id)
-        result = await self.session.execute(query)
-        return result.scalars().one()
+        result = await self._execute(query)
+        facility = result.scalars().one_or_none()
+        if facility is None:
+            raise NotFoundError("Удобство не найдено")
+        return facility
 
 
 class RoomsFacilitiesRepository(BaseRepository):
@@ -32,7 +36,7 @@ class RoomsFacilitiesRepository(BaseRepository):
     async def get_room_facilities(self, room_id: int) -> list[int]:
         stmt = select(self.model.facilities_id).where(self.model.room_id == room_id)
 
-        result = await self.session.execute(stmt)
+        result = await self._execute(stmt)
 
         return result.scalars().all()
 
@@ -46,7 +50,7 @@ class RoomsFacilitiesRepository(BaseRepository):
             self.model.facilities_id.in_(delete_facilities_ids),
         )
 
-        await self.session.execute(stmt)
+        await self._execute(stmt)
 
     async def delete_room_facilities_all(
         self,
@@ -54,4 +58,4 @@ class RoomsFacilitiesRepository(BaseRepository):
     ):
         stmt = delete(self.model).where(self.model.room_id == room_id)
 
-        await self.session.execute(stmt)
+        await self._execute(stmt)

@@ -1,13 +1,14 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException, Query, Request
-from jwt.exceptions import ExpiredSignatureError
+from fastapi import Depends, HTTPException, Path, Query, Request
 from pydantic import BaseModel
 from redis_fastapi import cache, cache_evict, cache_put
 
 from src.database import async_session_maker
 from src.services.auth import AuthService
 from src.utils.db_manager import DBManager
+
+PositiveId = Annotated[int, Path(gt=0)]
 
 
 class PaginationParams(BaseModel):
@@ -21,19 +22,19 @@ PaginationDep = Annotated[PaginationParams, Depends()]
 def get_token(request: Request) -> str:
     token = request.cookies.get("access_token", None)
     if not token:
-        raise HTTPException(status_code=401, detail="Token is missing")
+        raise HTTPException(status_code=401, detail="Токен отсутствует")
     return token
 
 
 def get_current_user_id(token: str = Depends(get_token)) -> int:
-    try:
-        token = AuthService().decode_token(token=token)
-        return token["user_id"]
-    except ExpiredSignatureError:
-        raise HTTPException(401, "Токен истек")
+    payload = AuthService().decode_token(token=token)
+    user_id = payload.get("user_id")
+    if type(user_id) is not int or user_id <= 0:
+        raise HTTPException(status_code=401, detail="Некорректный токен")
+    return user_id
 
 
-UserIdDep = Annotated[int, Depends(get_current_user_id)]
+
 
 
 def get_db_manager():
@@ -46,6 +47,15 @@ async def get_db():
 
 
 DBDep = Annotated[DBManager, Depends(get_db)]
+
+
+async def get_authenticated_user_id(db: DBDep, user_id: Annotated[int, Depends(get_current_user_id)]):
+    if await db.users.get_one_or_none(id=user_id) is None:
+        raise HTTPException(status_code=401, detail="Пользователь не найден")
+    return user_id
+
+
+UserIdDep = Annotated[int, Depends(get_authenticated_user_id)]
 
 
 def cached(ttl: int = 60, group: str = ""):

@@ -1,4 +1,7 @@
+from sqlalchemy.exc import DataError, IntegrityError
+
 from src.repositories.bookings import BookingRepository
+from src.repositories.errors import translate_database_error
 from src.repositories.facilities import FacilitiesRepository, RoomsFacilitiesRepository
 from src.repositories.hotels import HotelRepository
 from src.repositories.rooms import RoomsRepository
@@ -22,8 +25,16 @@ class DBManager:
         return self
 
     async def __aexit__(self, exc_type, exc_val, exc_tb):
-        await self.session.rollback()
-        await self.session.close()
+        try:
+            await self.session.rollback()
+        finally:
+            await self.session.close()
 
     async def commit(self):
-        await self.session.commit()
+        try:
+            await self.session.commit()
+        except (IntegrityError, DataError) as exc:
+            error = translate_database_error(exc)
+            if error is not None:
+                raise error from exc
+            raise
