@@ -14,6 +14,8 @@ from sqlalchemy.exc import TimeoutError as DatabaseTimeoutError
 
 from src.exceptions import AppError
 
+logging.basicConfig(level=logging.INFO)
+
 logger = logging.getLogger(__name__)
 
 
