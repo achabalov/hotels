@@ -17,7 +17,6 @@ import pytest
     ],
 )
 async def test_add_booking(room_id, date_from, date_to, status_code, db, authenticated_ac):
-    # room = await db.rooms.get_by_id(1)
     response = await authenticated_ac.post(
         "/bookings",
         json={"room_id": room_id, "date_from": date_from, "date_to": date_to},

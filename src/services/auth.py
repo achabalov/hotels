@@ -1,13 +1,14 @@
 from datetime import UTC, datetime, timedelta
 
 import jwt
-from fastapi import HTTPException
 from pwdlib import PasswordHash
 
 from src.config import settings
+from src.exceptions import InvalidTokenError, TokenExpiredError
+from src.services.base import BaseService
 
 
-class AuthService:
+class AuthService(BaseService):
     password_hash = PasswordHash.recommended()
 
     def create_access_token(self, data: dict) -> str:
@@ -31,6 +32,6 @@ class AuthService:
         try:
             return jwt.decode(token, settings.JWT_SECRET_KEY, algorithms=settings.JWT_ALGORITHM)
         except jwt.ExpiredSignatureError as exc:
-            raise HTTPException(status_code=401, detail="Токен истек") from exc
+            raise TokenExpiredError("Токен истек") from exc
         except jwt.InvalidTokenError as exc:
-            raise HTTPException(status_code=401, detail="Некорректный токен") from exc
+            raise InvalidTokenError("Некорректный токен") from exc

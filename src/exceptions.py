@@ -1,21 +1,47 @@
 class AppError(Exception):
-    status_code = 400
-
     def __init__(self, detail: str):
         self.detail = detail
         super().__init__(detail)
 
 
 class NotFoundError(AppError):
-    status_code = 404
+    pass
 
 
 class ConflictError(AppError):
-    status_code = 409
+    pass
 
 
 class InvalidDataError(AppError):
-    status_code = 422
+    pass
+
+
+class AuthenticationError(AppError):
+    pass
+
+
+class TokenExpiredError(AuthenticationError):
+    pass
+
+
+class InvalidTokenError(AuthenticationError):
+    pass
+
+
+class InvalidImageError(InvalidDataError):
+    pass
+
+
+class ImageTooLargeError(AppError):
+    pass
+
+
+class UnsupportedImageFormatError(AppError):
+    pass
+
+
+class ImageStorageError(AppError):
+    pass
 
 
 def validate_dates(date_from, date_to):
