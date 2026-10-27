@@ -23,8 +23,7 @@ class RedisManager:
             # db=self.db,
             decode_responses=True,
         )
-        logging.info(f"Connecting to Redis successful ")
-
+        logging.info("Connecting to Redis successful ")
 
         await self.redis.ping()
 

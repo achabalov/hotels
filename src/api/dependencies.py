@@ -34,9 +34,6 @@ def get_current_user_id(token: str = Depends(get_token)) -> int:
     return user_id
 
 
-
-
-
 def get_db_manager():
     return DBManager(session_factory=async_session_maker)
 
@@ -49,7 +46,9 @@ async def get_db():
 DBDep = Annotated[DBManager, Depends(get_db)]
 
 
-async def get_authenticated_user_id(db: DBDep, user_id: Annotated[int, Depends(get_current_user_id)]):
+async def get_authenticated_user_id(
+    db: DBDep, user_id: Annotated[int, Depends(get_current_user_id)]
+):
     if await db.users.get_one_or_none(id=user_id) is None:
         raise HTTPException(status_code=401, detail="Пользователь не найден")
     return user_id

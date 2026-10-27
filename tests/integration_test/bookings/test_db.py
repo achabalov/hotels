@@ -10,8 +10,8 @@ async def test_add_booking(db):
     booking_data = BookingsAdd(
         room_id=room.id,
         user_id=user.id,
-        date_from=date(2027, 1, 1),
-        date_to=date(2027, 1, 9),
+        date_from=date(2027, 2, 1),
+        date_to=date(2027, 2, 9),
         price=200,
     )
 
